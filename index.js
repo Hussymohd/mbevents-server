@@ -3,11 +3,15 @@ const express = require('express')
 const mongoose = require('mongoose')
 const app = express()
 const PORT = process.env.PORT || 3000  //  during production, during development
+const cors = require('cors')
+
+
 const userRouter = require('./routes/userRouter')
 
 
 //middleware
 app.use(express.json())
+app.use(cors())
 
 //routes
 app.get('/', (req, res) => {
