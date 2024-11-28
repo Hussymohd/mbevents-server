@@ -1,0 +1,4 @@
+# Allows us to provide files dat re going to be ignored by github - 
+.env
+node_modules
+note.txt
