@@ -55,7 +55,7 @@ const createEvent = async (req, res) => {
       category,
       location: online === "true" ? "online" : location,
       tags,
-      prices: {
+      price: {
         free: free === "true",
         regular: free === "true" ? 0 : req.body?.regularPrice,
         vip: free === "true" ? 0 : req.body?.vipPrice,
