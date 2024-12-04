@@ -1,24 +1,47 @@
-const EVENT = require('../models/events');
-const USER = require('../models/user')
-const cloudinary = require('cloudinary').v2
-const fs = require('fs')  //file system
+const EVENT = require("../models/events");
+const USER = require("../models/user");
+const cloudinary = require("cloudinary").v2;
+const fs = require("fs"); //file system
 
 const createEvent = async (req, res) => {
-   const {userId} = req.user
-   const {date, title, startTime, endTime, location, description, tags, free, online, category,} = req.body;
+  const { userId } = req.user;
+  const {
+    date,
+    title,
+    startTime,
+    endTime,
+    location,
+    description,
+    tags,
+    free,
+    online,
+    category,
+  } = req.body;
 
-   try {
-    if (!date || title || startTime || endTime || description || tags || free || category || (!location && !online )) {
-     return res.status(400).json({success: false, message: 'All fields are required'})
+  try {
+    if (
+      !date ||
+      !title ||
+      !startTime ||
+      !endTime ||
+      !description ||
+      !tags ||
+      !free ||
+      !category ||
+      (!location && !online)
+    ) {
+      return res
+        .status(400)
+        .json({ success: false, message: "All fields are required" });
     }
     //image upload req.files
-    const imageFile = req.files.image.tempFilePath
+    const imageFile = req.files.image.tempFilePath;
     //upload image to cloudinary
     const uploadedImage = await cloudinary.uploader.upload(imageFile, {
       use_filename: true,
       folder: "mbevents",
     });
-   //delete the file from our server
+    //delete the file from our server
     fs.unlinkSync(req.files.image.tempFilePath);
 
     //create a new event
@@ -37,19 +60,17 @@ const createEvent = async (req, res) => {
         regular: free === "true" ? 0 : req.body?.regularPrice,
         vip: free === "true" ? 0 : req.body?.vipPrice,
       },
-      hostedBy: userId
+      hostedBy: userId,
     });
 
-    const event = await newEvent.save()
-    res.status(201).json({success: true, event})
-
-
-   } catch (error) {
+    const event = await newEvent.save();
+    res.status(201).json({ success: true, event });
+  } catch (error) {
     console.log(error);
-    
-    res.status(400).json({error: error.message});
-   }
-}
+
+    res.status(400).json({ error: error.message });
+  }
+};
 
 const getUpcomingEvents = async (req, res) => {
   res.send("get upcoming events");
@@ -59,5 +80,4 @@ const getFreeEvents = async (req, res) => {
   res.send("get free events");
 };
 
-
-module.exports = {createEvent, getUpcomingEvents, getFreeEvents}
+module.exports = { createEvent, getUpcomingEvents, getFreeEvents };
