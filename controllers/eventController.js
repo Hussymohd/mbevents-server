@@ -184,6 +184,7 @@ const getAllEvents = async (req, res) => {
     res.status(400).json({ error: "Something went wrong", msg: error.message });
   }
 };
+
 const getHostedEvents = async (req, res) => {
   const { userId } = req.user; // Extract user ID from the authenticated request
   const page = parseInt(req.query.page) || 1; // Default to page 1 if no query provided
