@@ -77,7 +77,7 @@ const getUpcomingEvents = async (req, res) => {
     const currentDate = new Date();
     //finds the events where the date is in the future or today
     const upcomingEvents = await EVENT.find({ date: { $gte: currentDate } })
-      .sort("date") //sort by date in ascending order
+      .sort("-date") //sort by date in ascending order
       .limit(6)
       .populate("hostedBy", "fullName"); //limits the no of events to 4
     res.status(200).json({ success: true, events: upcomingEvents });
@@ -213,13 +213,15 @@ const getHostedEvents = async (req, res) => {
       events: hostedEvents,
     });
   } catch (error) {
- res.status(400).json({
+    res.status(400).json({
       success: false,
       message: "Something went wrong",
       error: error.message,
     });
   }
 };
+
+//http://localhost:5173/your-events/attending
 
 const payForAnEvent = async (req, res) => {
   const { userId } = req.user; // Get user ID from authenticated user
@@ -247,7 +249,7 @@ const payForAnEvent = async (req, res) => {
         success: false,
         message: "Event already added to your events",
       });
-  }
+    }
 
     // Add the event to the user's "yourEvents" field
     user.yourevents.push(eventId);
@@ -282,7 +284,7 @@ const getpreviousEvents = async (req, res) => {
       options: {
         sort: { date: -1 }, // Sort by date in descending order
         skip,
-  limit,
+        limit,
       },
       populate: {
         path: "hostedBy", // Populate the hostedBy field
@@ -316,7 +318,7 @@ const getpreviousEvents = async (req, res) => {
     console.error("Error retrieving previous events:", error.message);
     res.status(400).json({
       success: false,
- message: "Something went wrong while fetching previous events",
+      message: "Something went wrong while fetching previous events",
       error: error.message,
     });
   }
@@ -374,8 +376,6 @@ const getEventsToAttend = async (req, res) => {
     });
   }
 };
-
-
 
 module.exports = {
   createEvent,
