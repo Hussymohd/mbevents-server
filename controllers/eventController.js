@@ -93,7 +93,7 @@ const getFreeEvents = async (req, res) => {
       date: { $gte: currentDate },
       "price.free": true,
     })
-      .sort("date")
+      .sort("-date")
       .limit(6)
       .populate("hostedBy", "fullName");
     res.status(200).json({ success: true, events: freeEvents });
