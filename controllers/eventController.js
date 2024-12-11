@@ -131,7 +131,7 @@ const getSingleEvent = async (req, res) => {
 const getAllEvents = async (req, res) => {
   const { location, category, tag, price, searchTerm } = req.query;
   const page = parseInt(req.query.page) || 1; // Default to page 1 if not provided
-  const limit = 10;
+  const limit = 9;
   const queryObject = {};
   queryObject.date = { $gte: new Date().setHours(0, 0, 0, 0) }; // Events starting from today at midnight
   let result = EVENT.find(queryObject);
